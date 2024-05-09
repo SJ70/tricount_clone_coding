@@ -1,5 +1,6 @@
 package com.example.tricount.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,14 +29,20 @@ public class Expense {
     @JsonManagedReference
     private Member member;
 
+    @ManyToOne
+    @NotNull
+    @JsonBackReference
+    private Settlement settlement;
+
     @NotNull
     private BigDecimal amount;
 
     private LocalDateTime date;
 
-    public Expense(String title, Member member, Number amount) {
+    public Expense(String title, Settlement settlement, Member member, Number amount) {
         this.title = title;
         this.member = member;
+        this.settlement = settlement;
         this.amount = (BigDecimal) amount;
         this.date = LocalDateTime.now();
     }

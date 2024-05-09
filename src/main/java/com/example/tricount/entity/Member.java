@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -36,6 +37,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @JsonBackReference
     private List<Expense> expenses = new ArrayList<>();
+
+    @BatchSize(size = 100)
+    @ManyToMany(mappedBy = "members")
+    @JsonBackReference
+    private List<Settlement> settlements = new ArrayList<>();
 
     public Member(String username, String userId, String password) {
         this.username = username;
