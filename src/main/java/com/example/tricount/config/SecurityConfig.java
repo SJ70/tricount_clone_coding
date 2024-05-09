@@ -18,6 +18,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/member/join").permitAll()    // 특정 경로 요청 시 인증 불필요
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated());                 // 나머지 요청 시 인증 필요
 
         return http.build();
