@@ -18,9 +18,9 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Override
     @Transactional
-    public Settlement create(String userId, String title) {
+    public Settlement create(String username, String title) {
         Settlement settlement = new Settlement(title);
-        Member member = memberService.findByUserId(userId);
+        Member member = memberService.findByUsername(username);
         this.join(settlement, member); // join()에서 save 하므로 save 생략
         return settlement;
     }

@@ -5,10 +5,10 @@ import com.example.tricount.jwt.JwtToken;
 
 public interface MemberService {
 
-    Member findByUserId(String userId);
+    Member findByUsername(String username);
 
-    Member join(String name, String id, String password);
+    Member join(String nickname, String username, String password);
 
-    JwtToken signIn(String userId, String password);
+    JwtToken signIn(String username, String password);
 
 }

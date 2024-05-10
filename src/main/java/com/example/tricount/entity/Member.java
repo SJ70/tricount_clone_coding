@@ -30,11 +30,11 @@ public class Member implements UserDetails {
     private Long id;
 
     @NotNull
-    private String username;
+    private String nickname;
 
     @NotNull
     @Column(unique = true)
-    private String userId;
+    private String username;
 
     @NotNull
     private String password;
@@ -49,9 +49,9 @@ public class Member implements UserDetails {
     @JsonBackReference
     private List<Settlement> settlements = new ArrayList<>();
 
-    public Member(String username, String userId, String password) {
+    public Member(String nickname, String username, String password) {
+        this.nickname = nickname;
         this.username = username;
-        this.userId = userId;
         this.password = password;
     }
 

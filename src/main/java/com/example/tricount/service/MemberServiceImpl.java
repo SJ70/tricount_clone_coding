@@ -26,14 +26,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Member findByUserId(String userId) {
-        return memberRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("not existed userId : " + userId));
+    public Member findByUsername(String username) {
+        return memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("not existed username : " + username));
     }
 
     @Override
     @Transactional
-    public Member join(String name, String id, String password) {
-        Member member = new Member(name, id, password);
+    public Member join(String nickname, String username, String password) {
+        Member member = new Member(nickname, username, password);
         memberRepository.save(member);
         log.info("회원가입 성공 = {}", member);
         return member;
@@ -41,8 +41,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public JwtToken signIn(String userId, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId, password);
+    public JwtToken signIn(String username, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         JwtToken token = jwtTokenProvider.generateToken(authentication);
         log.info("로그인 성공, 토큰 = {}", token.toString());

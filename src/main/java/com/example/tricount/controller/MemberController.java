@@ -25,7 +25,7 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity<Member> join(@RequestBody CreateMemberRequestDTO requestDTO) {
         try {
-            Member member = memberService.join(requestDTO.name(), requestDTO.id(), requestDTO.password());
+            Member member = memberService.join(requestDTO.nickname(), requestDTO.username(), requestDTO.password());
             return ResponseEntity.status(HttpStatus.CREATED).body(member);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -34,7 +34,7 @@ public class MemberController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<JwtToken> signIn(@RequestBody SignInRequestDTO requestDTO) {
-        String username = requestDTO.userId();
+        String username = requestDTO.username();
         String password = requestDTO.password();
         JwtToken token = memberService.signIn(username, password);
         return ResponseEntity.ok(token);

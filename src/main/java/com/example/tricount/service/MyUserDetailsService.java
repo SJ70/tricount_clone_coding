@@ -21,14 +21,14 @@ public class MyUserDetailsService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Could not found user" + userId));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Could not found user" + username));
 
         log.info("Success find member {}", member);
 
         return User.builder()
-                .username(member.getUserId())
+                .username(member.getUsername())
                 .password(passwordEncoder.encode(member.getPassword()))
                 .roles("USER")
                 .build();
