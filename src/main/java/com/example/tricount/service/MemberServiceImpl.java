@@ -26,6 +26,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
+    public Member findByUserId(String userId) {
+        return memberRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("not existed userId : " + userId));
+    }
+
+    @Override
+    @Transactional
     public Member join(String name, String id, String password) {
         Member member = new Member(name, id, password);
         memberRepository.save(member);

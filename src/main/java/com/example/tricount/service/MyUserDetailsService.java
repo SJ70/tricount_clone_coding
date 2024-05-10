@@ -2,6 +2,7 @@ package com.example.tricount.service;
 
 import com.example.tricount.entity.Member;
 import com.example.tricount.repository.MemberRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
@@ -28,6 +29,14 @@ public class MyUserDetailsService implements UserDetailsService {
 
         return User.builder()
                 .username(member.getUserId())
+                .password(passwordEncoder.encode(member.getPassword()))
+                .roles("USER")
+                .build();
+    }
+
+    private UserDetails createUserDetails(Member member) {
+        return User.builder()
+                .username(member.getUsername())
                 .password(passwordEncoder.encode(member.getPassword()))
                 .roles("USER")
                 .build();
