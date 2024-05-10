@@ -3,6 +3,7 @@ package com.example.tricount.service;
 import com.example.tricount.dto.CreateMemberRequestDTO;
 import com.example.tricount.dto.SignInRequestDTO;
 import com.example.tricount.entity.Member;
+import com.example.tricount.entity.Settlement;
 import com.example.tricount.jwt.JwtToken;
 import com.example.tricount.jwt.JwtTokenProvider;
 import com.example.tricount.repository.MemberRepository;
@@ -25,12 +26,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Member join(CreateMemberRequestDTO requestDTO) {
-        Member member = new Member(
-                requestDTO.name(),
-                requestDTO.id(),
-                requestDTO.password()
-        );
+    public Member join(String name, String id, String password) {
+        Member member = new Member(name, id, password);
         memberRepository.save(member);
         log.info("회원가입 성공 = {}", member);
         return member;

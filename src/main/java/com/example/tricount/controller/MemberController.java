@@ -25,7 +25,7 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity<Member> join(@RequestBody CreateMemberRequestDTO requestDTO) {
         try {
-            Member member = memberService.join(requestDTO);
+            Member member = memberService.join(requestDTO.name(), requestDTO.id(), requestDTO.password());
             return ResponseEntity.status(HttpStatus.CREATED).body(member);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

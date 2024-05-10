@@ -55,6 +55,10 @@ public class Member implements UserDetails {
         this.password = password;
     }
 
+    public void addSettlement(Settlement settlement) {
+        this.settlements.add(settlement);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Stream.of("USER")
