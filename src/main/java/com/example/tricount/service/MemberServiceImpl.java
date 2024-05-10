@@ -33,10 +33,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public Member join(String nickname, String username, String password) {
-        Member member = new Member(nickname, username, password);
-        memberRepository.save(member);
-        log.info("회원가입 성공 = {}", member);
-        return member;
+        Member newMember = new Member(nickname, username, password);
+        Member result = memberRepository.save(newMember);
+        return result;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         JwtToken token = jwtTokenProvider.generateToken(authentication);
-        log.info("로그인 성공, 토큰 = {}", token.toString());
+        log.info("로그인 성공, 유저: {}, 토큰: {}", username, token.toString());
         return token;
     }
 
