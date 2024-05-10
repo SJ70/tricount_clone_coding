@@ -28,7 +28,7 @@ public class Settlement {
     private String title;
 
     @BatchSize(size = 100)
-    @ManyToMany(mappedBy = "settlements")
+    @ManyToMany
     @JsonManagedReference
     private Set<Member> members = new HashSet<>();
 
