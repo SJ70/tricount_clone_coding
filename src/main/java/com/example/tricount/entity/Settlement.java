@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
@@ -44,6 +45,13 @@ public class Settlement {
 
     public void addMember(Member member) {
         this.members.add(member);
+    }
+
+    @Override
+    public String toString() {
+        String members = this.members.stream().map(Member::getNickname).collect(Collectors.joining(", "));
+        String expenses = this.expenses.stream().map(Expense::getTitle).collect(Collectors.joining(", "));
+        return String.format("id: %d, title: %d, members: [%s], expenses: [%s]", id, title, members, expenses);
     }
 
 }

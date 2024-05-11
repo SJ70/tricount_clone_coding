@@ -85,4 +85,9 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return String.format("id: %d, nickname: %s, username: %s", id, nickname, username);
+    }
 }
