@@ -13,7 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +23,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@EqualsAndHashCode
 public class Member implements UserDetails {
 
     @Id
