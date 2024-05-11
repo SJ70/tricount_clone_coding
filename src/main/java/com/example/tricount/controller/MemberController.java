@@ -5,6 +5,7 @@ import com.example.tricount.dto.SignInRequestDTO;
 import com.example.tricount.entity.Member;
 import com.example.tricount.jwt.JwtToken;
 import com.example.tricount.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @Operation(summary = "회원가입")
     @PostMapping("/join")
     public ResponseEntity<Member> join(@RequestBody CreateMemberRequestDTO requestDTO) {
         try {
@@ -32,6 +34,7 @@ public class MemberController {
         }
     }
 
+    @Operation(summary = "로그인")
     @PostMapping("/sign-in")
     public ResponseEntity<JwtToken> signIn(@RequestBody SignInRequestDTO requestDTO) {
         String username = requestDTO.username();

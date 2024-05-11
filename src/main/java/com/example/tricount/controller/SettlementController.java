@@ -6,6 +6,7 @@ import com.example.tricount.entity.Settlement;
 import com.example.tricount.service.MemberService;
 import com.example.tricount.service.SettlementService;
 import com.example.tricount.util.SecurityUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class SettlementController {
     private final SettlementService settlementService;
     private final MemberService memberService;
 
+    @Operation(summary = "사용자가 참여한 정산 목록 조회")
     @GetMapping()
     public ResponseEntity<Collection<Settlement>> getParticipatingSettlements() {
         String username = SecurityUtil.getCurrentUsername();
@@ -33,6 +35,7 @@ public class SettlementController {
         return ResponseEntity.ok(settlements);
     }
 
+    @Operation(summary = "정산 생성")
     @PostMapping()
     public ResponseEntity<Settlement> create(@RequestBody CreateSettlementRequestDTO requestDTO) {
         String username = SecurityUtil.getCurrentUsername();
@@ -40,6 +43,7 @@ public class SettlementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(settlement);
     }
 
+    @Operation(summary = "정산에 참여")
     @PostMapping("/join")
     public ResponseEntity<Collection<Member>> join(@RequestParam("id") Long settlementId) {
         String username = SecurityUtil.getCurrentUsername();
