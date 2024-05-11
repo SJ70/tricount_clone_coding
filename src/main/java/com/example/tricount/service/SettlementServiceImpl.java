@@ -6,7 +6,6 @@ import com.example.tricount.repository.MemberRepository;
 import com.example.tricount.repository.SettlementRepository;
 import jakarta.transaction.Transactional;
 import java.util.Collection;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,7 @@ public class SettlementServiceImpl implements SettlementService {
     private final MemberRepository memberRepository;
 
     @Override
+    @Transactional
     public Settlement findById(Long id) {
         return settlementRepository.findById(id).orElseThrow(() -> new RuntimeException("not existed settlement, id " + id));
     }
@@ -38,7 +38,7 @@ public class SettlementServiceImpl implements SettlementService {
         Member member = memberService.findByUsername(username);
         Settlement settlement = this.findById(settlementId);
         settlement.addMember(member);
-        join(member, settlement); // join()에서 save 하므로 save 생략
+        this.join(member, settlement); // join()에서 save 하므로 save 생략
         return settlement.getMembers();
     }
 
