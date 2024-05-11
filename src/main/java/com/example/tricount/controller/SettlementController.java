@@ -26,8 +26,19 @@ public class SettlementController {
     private final SettlementService settlementService;
     private final MemberService memberService;
 
-    @Operation(summary = "사용자가 참여한 정산 목록 조회")
+    @Operation(summary = "정산 단 건 조회")
     @GetMapping()
+    public ResponseEntity<Settlement> findById(@RequestParam("id") Long id) {
+        String username = SecurityUtil.getCurrentUsername();
+        Settlement settlement = settlementService.findById(id);
+
+        return settlement.containsMemberByUsername(username)
+                ? ResponseEntity.ok(settlement)
+                : ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    }
+
+    @Operation(summary = "사용자가 참여한 정산 목록 조회")
+    @GetMapping("/all")
     public ResponseEntity<Collection<Settlement>> getParticipatingSettlements() {
         String username = SecurityUtil.getCurrentUsername();
         Member member = memberService.findByUsername(username);

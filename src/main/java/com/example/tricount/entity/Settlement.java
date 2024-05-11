@@ -47,6 +47,10 @@ public class Settlement {
         this.members.add(member);
     }
 
+    public boolean containsMemberByUsername(String username) {
+        return members.stream().map(Member::getUsername).anyMatch(name -> name.equals(username));
+    }
+
     @Override
     public String toString() {
         String members = this.members.stream().map(Member::getNickname).collect(Collectors.joining(", "));
