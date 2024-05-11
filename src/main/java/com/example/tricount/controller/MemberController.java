@@ -24,7 +24,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @Operation(summary = "회원가입")
-    @PostMapping("/join")
+    @PostMapping("/sign-up")
     public ResponseEntity<Member> join(@RequestBody CreateMemberRequestDTO requestDTO) {
         try {
             Member member = memberService.join(requestDTO.nickname(), requestDTO.username(), requestDTO.password());
