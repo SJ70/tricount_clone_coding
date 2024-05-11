@@ -3,12 +3,14 @@ package com.example.tricount.controller;
 import com.example.tricount.dto.CreateSettlementRequestDTO;
 import com.example.tricount.entity.Member;
 import com.example.tricount.entity.Settlement;
+import com.example.tricount.service.MemberService;
 import com.example.tricount.service.SettlementService;
 import com.example.tricount.util.SecurityUtil;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class SettlementController {
 
     private final SettlementService settlementService;
+    private final MemberService memberService;
+
+    @GetMapping()
+    public ResponseEntity<Collection<Settlement>> getParticipatingSettlements() {
+        String username = SecurityUtil.getCurrentUsername();
+        Member member = memberService.findByUsername(username);
+        Collection<Settlement> settlements = member.getSettlements();
+        return ResponseEntity.ok(settlements);
+    }
 
     @PostMapping()
     public ResponseEntity<Settlement> create(@RequestBody CreateSettlementRequestDTO requestDTO) {
