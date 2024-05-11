@@ -39,11 +39,11 @@ public class Expense {
 
     private LocalDateTime date;
 
-    public Expense(String title, Settlement settlement, Member member, Number amount) {
+    public Expense(String title, Settlement settlement, Member member, BigDecimal amount) {
         this.title = title;
         this.member = member;
         this.settlement = settlement;
-        this.amount = (BigDecimal) amount;
+        this.amount = amount;
         this.date = LocalDateTime.now();
     }
 
