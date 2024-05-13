@@ -47,6 +47,10 @@ public class Expense {
         this.date = LocalDateTime.now();
     }
 
+    public boolean canAccessedBy(String username) {
+        return member.getUsername().equals(username);
+    }
+
     @Override
     public String toString() {
         String format = "id: %d, title: %s, member: %s, settlement: %s, amount: %s, date: %s";

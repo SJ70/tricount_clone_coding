@@ -26,4 +26,13 @@ public class ExpenseService {
         return expense;
     }
 
+    @Transactional
+    public void delete(Expense expense) {
+        expenseRepository.delete(expense);
+    }
+
+    public Expense findById(Long id) {
+        return expenseRepository.findById(id).orElseThrow(() -> new RuntimeException("not found expense, id = " + id));
+    }
+
 }
