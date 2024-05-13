@@ -1,6 +1,7 @@
 package com.example.tricount.controller;
 
 import com.example.tricount.dto.CreateExpenseRequestDTO;
+import com.example.tricount.dto.ExpenseInfoDTO;
 import com.example.tricount.entity.Expense;
 import com.example.tricount.service.ExpenseService;
 import com.example.tricount.util.SecurityUtil;
@@ -21,10 +22,10 @@ public class ExpenseController {
 
     @Operation(summary = "지출 생성")
     @PostMapping
-    public ResponseEntity<Expense> create(CreateExpenseRequestDTO requestDTO) {
+    public ResponseEntity<ExpenseInfoDTO> create(CreateExpenseRequestDTO requestDTO) {
         String username = SecurityUtil.getCurrentUsername();
         Expense expense = expenseService.create(username, requestDTO.settlementId(), requestDTO.title(), requestDTO.amount());
-        return ResponseEntity.status(HttpStatus.CREATED).body(expense);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ExpenseInfoDTO(expense));
     }
 
 }

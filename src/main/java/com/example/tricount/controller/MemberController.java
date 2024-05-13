@@ -1,6 +1,7 @@
 package com.example.tricount.controller;
 
 import com.example.tricount.dto.CreateMemberRequestDTO;
+import com.example.tricount.dto.MemberProfileDTO;
 import com.example.tricount.dto.SignInRequestDTO;
 import com.example.tricount.entity.Member;
 import com.example.tricount.jwt.JwtToken;
@@ -25,10 +26,10 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/sign-up")
-    public ResponseEntity<Member> join(@RequestBody CreateMemberRequestDTO requestDTO) {
+    public ResponseEntity<MemberProfileDTO> join(@RequestBody CreateMemberRequestDTO requestDTO) {
         try {
             Member member = memberService.join(requestDTO.nickname(), requestDTO.username(), requestDTO.password());
-            return ResponseEntity.status(HttpStatus.CREATED).body(member);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MemberProfileDTO(member));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

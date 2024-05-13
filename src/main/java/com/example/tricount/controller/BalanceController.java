@@ -1,13 +1,18 @@
 package com.example.tricount.controller;
 
+import com.example.tricount.dto.BalanceInfoDTO;
+import com.example.tricount.dto.TransferInfoDTO;
+import com.example.tricount.entity.AmountPerMember;
 import com.example.tricount.entity.Balance;
 import com.example.tricount.entity.Member;
 import com.example.tricount.entity.Settlement;
+import com.example.tricount.entity.Transfer;
 import com.example.tricount.service.BalanceService;
 import com.example.tricount.service.MemberService;
 import com.example.tricount.service.SettlementService;
 import com.example.tricount.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,7 +33,7 @@ public class BalanceController {
 
     @Operation(summary = "정산 결과 집계")
     @GetMapping("/calc")
-    public ResponseEntity<Balance> calculate(@RequestParam("settlementId") Long settlementId) {
+    public ResponseEntity<BalanceInfoDTO> calculate(@RequestParam("settlementId") Long settlementId) {
         String username = SecurityUtil.getCurrentUsername();
         Settlement settlement = settlementService.findById(settlementId);
 
@@ -43,7 +48,20 @@ public class BalanceController {
         }
         Balance balance = balanceService.create(settlement);
         log.info("집계 성공: {}", balance);
-        return ResponseEntity.status(HttpStatus.CREATED).body(balance);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BalanceInfoDTO(balance));
+    }
+
+    @Operation(summary = "정산 결과 조회")
+    @GetMapping()
+    public ResponseEntity<BalanceInfoDTO> findById(@RequestParam("id") Long id) {
+        String username = SecurityUtil.getCurrentUsername();
+        Balance balance = balanceService.findById(id);
+        log.info("정산 결과 조회 시도, username: {}, balanceId: {}", username, id);
+        if (!balance.getAmountPerMembers().stream().map(AmountPerMember::getMember).map(Member::getUsername).toList().contains(username)) {
+            log.info("권한 없음");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        return ResponseEntity.ok(new BalanceInfoDTO(balance));
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.tricount.controller;
 
 import com.example.tricount.dto.CreateSettlementRequestDTO;
+import com.example.tricount.dto.MemberProfileDTO;
+import com.example.tricount.dto.SettlementInfoDTO;
 import com.example.tricount.entity.Balance;
 import com.example.tricount.entity.Member;
 import com.example.tricount.entity.Settlement;
@@ -29,41 +31,42 @@ public class SettlementController {
 
     @Operation(summary = "정산 단 건 조회")
     @GetMapping()
-    public ResponseEntity<Settlement> findById(@RequestParam("id") Long id) {
+    public ResponseEntity<SettlementInfoDTO> findById(@RequestParam("id") Long id) {
         String username = SecurityUtil.getCurrentUsername();
         Settlement settlement = settlementService.findById(id);
 
         return settlement.containsMemberByUsername(username)
-                ? ResponseEntity.ok(settlement)
+                ? ResponseEntity.ok(new SettlementInfoDTO(settlement))
                 : ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
 
     @Operation(summary = "사용자가 참여한 정산 목록 조회 (정산 결과가 집계되지 않은)")
     @GetMapping("/all")
-    public ResponseEntity<Collection<Settlement>> getParticipatingSettlements() {
+    public ResponseEntity<Collection<SettlementInfoDTO>> getParticipatingSettlements() {
         String username = SecurityUtil.getCurrentUsername();
         Member member = memberService.findByUsername(username);
-        Collection<Settlement> settlements = member.getSettlements()
+        Collection<SettlementInfoDTO> settlements = member.getSettlements()
                 .stream()
                 .filter(settlement -> !settlement.isBalanced())
+                .map(SettlementInfoDTO::new)
                 .toList();
         return ResponseEntity.ok(settlements);
     }
 
     @Operation(summary = "정산 생성")
     @PostMapping()
-    public ResponseEntity<Settlement> create(@RequestBody CreateSettlementRequestDTO requestDTO) {
+    public ResponseEntity<SettlementInfoDTO> create(@RequestBody CreateSettlementRequestDTO requestDTO) {
         String username = SecurityUtil.getCurrentUsername();
         Settlement settlement = settlementService.create(username, requestDTO.title());
-        return ResponseEntity.status(HttpStatus.CREATED).body(settlement);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SettlementInfoDTO(settlement));
     }
 
     @Operation(summary = "정산에 참여")
     @PostMapping("/join")
-    public ResponseEntity<Collection<Member>> join(@RequestParam("id") Long settlementId) {
+    public ResponseEntity<Collection<MemberProfileDTO>> join(@RequestParam("id") Long settlementId) {
         String username = SecurityUtil.getCurrentUsername();
         Collection<Member> members = settlementService.join(username, settlementId);
-        return ResponseEntity.ok(members);
+        return ResponseEntity.ok(members.stream().map(MemberProfileDTO::new).toList());
     }
 
 }

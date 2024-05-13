@@ -18,6 +18,10 @@ public class BalanceService {
     private final TransferService transferService;
     private final AmountPerMemberService amountPerMemberService;
 
+    public Balance findById(Long id) {
+        return balanceRepository.findById(id).orElseThrow(() -> new RuntimeException("not found balance, id = " + id));
+    }
+
     @Transactional
     public Balance create(Settlement settlement) {
         Balance balance = new Balance(settlement);
