@@ -3,7 +3,9 @@ package com.example.tricount.controller;
 import com.example.tricount.dto.CreateExpenseRequestDTO;
 import com.example.tricount.dto.ExpenseInfoDTO;
 import com.example.tricount.entity.Expense;
+import com.example.tricount.entity.Settlement;
 import com.example.tricount.service.ExpenseService;
+import com.example.tricount.service.SettlementService;
 import com.example.tricount.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExpenseController {
 
     private final ExpenseService expenseService;
+    private final SettlementService settlementService;
 
     @Operation(summary = "지출 생성")
     @PostMapping
     public ResponseEntity<ExpenseInfoDTO> create(CreateExpenseRequestDTO requestDTO) {
         String username = SecurityUtil.getCurrentUsername();
-        Expense expense = expenseService.create(username, requestDTO.settlementId(), requestDTO.title(), requestDTO.amount());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ExpenseInfoDTO(expense));
+        Settlement settlement = settlementService.findById(requestDTO.settlementId());
+        if (settlement.canAccessedBy(username)) {
+            Expense expense = expenseService.create(username, requestDTO.settlementId(), requestDTO.title(), requestDTO.amount());
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ExpenseInfoDTO(expense));
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
 
     @Operation(summary = "지출 삭제")
