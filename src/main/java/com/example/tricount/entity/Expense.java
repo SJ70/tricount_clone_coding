@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,7 +44,7 @@ public class Expense {
         this.title = title;
         this.member = member;
         this.settlement = settlement;
-        this.amount = amount;
+        this.amount = amount.setScale(0, RoundingMode.HALF_UP);
         this.date = LocalDateTime.now();
     }
 

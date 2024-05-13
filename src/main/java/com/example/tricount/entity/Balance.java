@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.Getter;
@@ -43,7 +44,7 @@ public class Balance {
 
     public Balance(Settlement settlement) {
         this.settlement = settlement;
-        this.averageAmount = BalanceUtil.getAverageAmount(settlement);
+        this.averageAmount = BalanceUtil.getAverageAmount(settlement).setScale(0, RoundingMode.HALF_UP);;
         this.amountPerMembers = BalanceUtil.getAmountsPerMembers(this, settlement);
         this.transfers = BalanceUtil.getTransfers(this, settlement, amountPerMembers, averageAmount);
     }

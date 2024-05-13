@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,7 +35,7 @@ public class AmountPerMember {
     public AmountPerMember(Member member, Balance balance, BigDecimal amount) {
         this.member = member;
         this.balance = balance;
-        this.amount = amount;
+        this.amount = amount.setScale(0, RoundingMode.HALF_UP);
     }
 
 }
