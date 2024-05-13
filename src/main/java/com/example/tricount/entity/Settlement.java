@@ -3,7 +3,6 @@ package com.example.tricount.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -61,6 +60,10 @@ public class Settlement {
 
     public boolean isBalanced() {
         return this.balance != null;
+    }
+
+    public void setBalance(Balance balance) {
+        this.balance = balance;
     }
 
     @Override
