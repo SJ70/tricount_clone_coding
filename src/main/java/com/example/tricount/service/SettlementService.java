@@ -23,6 +23,11 @@ public class SettlementService {
     }
 
     @Transactional
+    public void delete(Settlement settlement) {
+        settlementRepository.delete(settlement);
+    }
+
+    @Transactional
     public Settlement findById(Long id) {
         return settlementRepository.findById(id).orElseThrow(() -> new RuntimeException("not existed settlement, id " + id));
     }

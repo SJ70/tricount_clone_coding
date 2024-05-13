@@ -14,6 +14,7 @@ import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,6 +68,18 @@ public class SettlementController {
         String username = SecurityUtil.getCurrentUsername();
         Collection<Member> members = settlementService.join(username, settlementId);
         return ResponseEntity.ok(members.stream().map(MemberProfileDTO::new).toList());
+    }
+
+    @Operation(summary = "정산 삭제")
+    @DeleteMapping()
+    public ResponseEntity<Void> delete(@RequestParam("id") Long settlementId) {
+        String username = SecurityUtil.getCurrentUsername();
+        Settlement settlement = settlementService.findById(settlementId);
+        if (settlement.canAccessedBy(username)) {
+            settlementService.delete(settlement);
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
 
 }

@@ -66,6 +66,10 @@ public class Settlement {
         this.balance = balance;
     }
 
+    public boolean canAccessedBy(String username) {
+        return this.members.stream().map(Member::getUsername).toList().contains(username);
+    }
+
     @Override
     public String toString() {
         String members = this.members.stream().map(Member::getNickname).collect(Collectors.joining(", "));
