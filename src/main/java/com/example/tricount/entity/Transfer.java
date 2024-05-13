@@ -26,10 +26,12 @@ public class Transfer {
 
     @ManyToOne
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    @JsonBackReference
     private Member sender;
 
     @ManyToOne
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
+    @JsonBackReference
     private Member receiver;
 
     private BigDecimal amount;

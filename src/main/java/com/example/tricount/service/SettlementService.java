@@ -18,6 +18,11 @@ public class SettlementService {
     private final MemberRepository memberRepository;
 
     @Transactional
+    public void save(Settlement settlement) {
+        settlementRepository.save(settlement);
+    }
+
+    @Transactional
     public Settlement findById(Long id) {
         return settlementRepository.findById(id).orElseThrow(() -> new RuntimeException("not existed settlement, id " + id));
     }

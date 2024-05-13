@@ -1,6 +1,7 @@
 package com.example.tricount.controller;
 
 import com.example.tricount.dto.CreateSettlementRequestDTO;
+import com.example.tricount.entity.Balance;
 import com.example.tricount.entity.Member;
 import com.example.tricount.entity.Settlement;
 import com.example.tricount.service.MemberService;

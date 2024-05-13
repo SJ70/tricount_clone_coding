@@ -1,5 +1,6 @@
 package com.example.tricount.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,10 +22,12 @@ public class AmountPerMember {
 
     @OneToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id")
+    @JsonBackReference
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "balance_id", referencedColumnName = "id")
+    @JsonBackReference
     private Balance balance;
 
     private BigDecimal amount;
