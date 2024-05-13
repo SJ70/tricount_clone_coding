@@ -57,11 +57,24 @@ public class BalanceController {
         String username = SecurityUtil.getCurrentUsername();
         Balance balance = balanceService.findById(id);
         log.info("정산 결과 조회 시도, username: {}, balanceId: {}", username, id);
-        if (!balance.getAmountPerMembers().stream().map(AmountPerMember::getMember).map(Member::getUsername).toList().contains(username)) {
+        if (!balance.canAccessedBy(username)) {
             log.info("권한 없음");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
         return ResponseEntity.ok(new BalanceInfoDTO(balance));
+    }
+
+    @Operation(summary = "정산 결과 조회 (송금 정보만)")
+    @GetMapping("/transfers")
+    public ResponseEntity<Collection<TransferInfoDTO>> findTransfersById(@RequestParam("id") Long id) {
+        String username = SecurityUtil.getCurrentUsername();
+        Balance balance = balanceService.findById(id);
+        log.info("정산 결과 조회 시도, username: {}, balanceId: {}", username, id);
+        if (!balance.canAccessedBy(username)) {
+            log.info("권한 없음");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        return ResponseEntity.ok(balance.getTransfers().stream().map(TransferInfoDTO::new).toList());
     }
 
 }

@@ -123,4 +123,8 @@ public class Balance {
         }
     }
 
+    public boolean canAccessedBy(String username) {
+        return amountPerMembers.stream().map(AmountPerMember::getMember).map(Member::getUsername).toList().contains(username);
+    }
+
 }
