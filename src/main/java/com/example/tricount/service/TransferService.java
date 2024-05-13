@@ -23,4 +23,14 @@ public class TransferService {
         transferRepository.saveAll(transfers);
     }
 
+    @Transactional
+    public Collection<Transfer> findAllByReceiver(Long id) {
+        return transferRepository.findAllByReceiverId(id);
+    }
+
+    @Transactional
+    public Collection<Transfer> findAllBySender(Long id) {
+        return transferRepository.findAllBySenderId(id);
+    }
+
 }
