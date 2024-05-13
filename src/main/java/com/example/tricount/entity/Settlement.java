@@ -1,11 +1,15 @@
 package com.example.tricount.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +42,11 @@ public class Settlement {
     @JsonManagedReference
     private List<Expense> expenses = new ArrayList<>();
 
+    @OneToOne(mappedBy = "settlement")
+    @Nullable
+    @JsonBackReference
+    private Balance balance;
+
     public Settlement(String title) {
         this.title = title;
     }
@@ -48,6 +57,10 @@ public class Settlement {
 
     public boolean containsMemberByUsername(String username) {
         return members.stream().map(Member::getUsername).anyMatch(name -> name.equals(username));
+    }
+
+    public boolean isBalanced() {
+        return this.balance != null;
     }
 
     @Override

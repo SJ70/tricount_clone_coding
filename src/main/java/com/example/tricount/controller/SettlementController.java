@@ -37,12 +37,15 @@ public class SettlementController {
                 : ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
 
-    @Operation(summary = "사용자가 참여한 정산 목록 조회")
+    @Operation(summary = "사용자가 참여한 정산 목록 조회 (정산 결과가 집계되지 않은)")
     @GetMapping("/all")
     public ResponseEntity<Collection<Settlement>> getParticipatingSettlements() {
         String username = SecurityUtil.getCurrentUsername();
         Member member = memberService.findByUsername(username);
-        Collection<Settlement> settlements = member.getSettlements();
+        Collection<Settlement> settlements = member.getSettlements()
+                .stream()
+                .filter(settlement -> !settlement.isBalanced())
+                .toList();
         return ResponseEntity.ok(settlements);
     }
 
