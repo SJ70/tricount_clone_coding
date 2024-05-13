@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)                  // 개발 단계에서의 일시적인 csrf 비활성화
 
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/member/join", "/member/sign-in").permitAll()    // 특정 경로 요청 시 인증 불필요
+                        .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()    // 특정 경로 요청 시 인증 불필요
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())                  // 나머지 요청 시 인증 필요
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
