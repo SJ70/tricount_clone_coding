@@ -1,6 +1,7 @@
 package com.example.tricount.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,7 +43,7 @@ public class Member implements UserDetails {
     private String password;
 
     @BatchSize(size = 100)
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<Expense> expenses = new ArrayList<>();
 

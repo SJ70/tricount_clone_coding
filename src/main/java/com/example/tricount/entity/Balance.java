@@ -2,6 +2,7 @@ package com.example.tricount.entity;
 
 import com.example.tricount.util.BalanceUtil;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -31,14 +32,14 @@ public class Balance {
     private Settlement settlement;
 
     @BatchSize(size = 100)
-    @OneToMany(mappedBy = "balance")
+    @OneToMany(mappedBy = "balance", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Collection<AmountPerMember> amountPerMembers = new ArrayList<>();
 
     private BigDecimal averageAmount;
 
     @BatchSize(size = 100)
-    @OneToMany(mappedBy = "balance")
+    @OneToMany(mappedBy = "balance", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Collection<Transfer> transfers = new ArrayList<>();
 

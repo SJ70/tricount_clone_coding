@@ -3,6 +3,7 @@ package com.example.tricount.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -37,11 +38,11 @@ public class Settlement {
     private Set<Member> members = new HashSet<>();
 
     @BatchSize(size = 100)
-    @OneToMany(mappedBy = "settlement")
+    @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Expense> expenses = new ArrayList<>();
 
-    @OneToOne(mappedBy = "settlement")
+    @OneToOne(mappedBy = "settlement", cascade = CascadeType.REMOVE)
     @Nullable
     @JsonBackReference
     private Balance balance;
